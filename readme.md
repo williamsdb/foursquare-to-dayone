@@ -122,7 +122,7 @@ If you have logging turned on, you will see a screen similar to the following as
 If you stop the process at any time (or it fails), then when you run the script again it will restart where it left off. If you don't want this to happen delete the ```progress.json``` file in the same folder as the script.
 
 
-###IMPORTANT!
+#### IMPORTANT!
 
 The progress shown in the terminal will be ahead of Day One, so don't panic if you can't see the entries. It may take as much as a minute or more for Day One to catch up. It will also use quite a lot of CPU and memory while it is running.
 
