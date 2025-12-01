@@ -119,7 +119,7 @@ If you have logging turned on, you will see a screen similar to the following as
 
 ![](https://www.spokenlikeageek.com/wp-content/uploads/2025/11/SCR-20251128-nrql.png)
 
-If you stop the process at any time (or it fails), then when you run the script again it will restart where it left off. If you don't want this to happen delete the ```progress.json``` file in the same folder as the script.
+If you stop the process at any time (or it fails), then when you run the script again it will restart where it left off. If you don't want this to happen, delete the ```progress.json``` file in the same folder as the script.
 
 
 #### IMPORTANT!

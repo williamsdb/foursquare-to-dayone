@@ -45,7 +45,7 @@ if (file_exists(PROGRESS_FILE)) {
 }
 
 // ------------------------
-// STEP 1 — INITIAL HISTORICAL IMPORT
+// INITIAL HISTORICAL IMPORT
 // ------------------------
 if ($state['next_fetch_offset'] === null) {
     $firstCall = fetchCheckinsWithRetries(FOURSQUARE_ACCESS_TOKEN, 0, 1);
@@ -115,20 +115,20 @@ while (!$doneHistorical) {
 }
 
 // ------------------------
-// STEP 2 — INCREMENTAL IMPORT (NEW CHECKINS WITH PAGINATION)
+// INCREMENTAL IMPORT (NEW CHECKINS WITH PAGINATION)
 // ------------------------
 logMessage("Checking for new check-ins...");
 
 $offset = 0;
 while (true) {
-    $batch = fetchCheckinsWithRetries(FOURSQUARE_ACCESS_TOKEN, $offset, FETCH_LIMIT);
-    $items = array_reverse($batch['items'] ?? []);
-    $newItems = [];
+    $items = fetchCheckinsWithRetries(FOURSQUARE_ACCESS_TOKEN, $offset, FETCH_LIMIT);
 
-    foreach ($items as $checkin) {
+    $newItems = [];
+    foreach ($items['items'] as $checkin) {
         if ($checkin['id'] === $state['last_imported_id']) {
-            break 2; // stop importing
+            break 1; // stop importing
         }
+
         $newItems[] = $checkin;
     }
 
@@ -285,74 +285,4 @@ function generateStaticMap($lat, $lon, $filename, $zoom = 14, $width = 1200, $he
     logMessage("Generated map for $lat,$lon -> $filename");
 
     return file_put_contents($filename, $imageData) !== false;
-}
-
-function array_to_html($val, $var = FALSE)
-{
-    $do_nothing = true;
-    $indent_size = 20;
-    $out = '';
-    $colors = array(
-        "Teal",
-        "YellowGreen",
-        "Tomato",
-        "Navy",
-        "MidnightBlue",
-        "FireBrick",
-        "DarkGreen"
-    );
-
-    // Get string structure
-    ob_start();
-    print_r($val);
-    $val = ob_get_contents();
-    ob_end_clean();
-
-    // Color counter
-    $current = 0;
-
-    // Split the string into character array
-    $array = preg_split('//', $val, -1, PREG_SPLIT_NO_EMPTY);
-    foreach ($array as $char) {
-        if ($char == "[")
-            if (!$do_nothing)
-                if ($var) {
-                    $out .= "</div>";
-                } else {
-                    echo "</div>";
-                }
-            else $do_nothing = false;
-        if ($char == "[")
-            if ($var) {
-                $out .= "<div>";
-            } else {
-                echo "<div>";
-            }
-        if ($char == ")") {
-            if ($var) {
-                $out .= "</div></div>";
-            } else {
-                echo "</div></div>";
-            }
-            $current--;
-        }
-
-        if ($var) {
-            $out .= $char;
-        } else {
-            echo $char;
-        }
-
-        if ($char == "(") {
-            if ($var) {
-                $out .= "<div class='indent' style='padding-left: {$indent_size}px; color: " . ($colors[$current % count($colors)]) . ";'>";
-            } else {
-                echo "<div class='indent' style='padding-left: {$indent_size}px; color: " . ($colors[$current % count($colors)]) . ";'>";
-            }
-            $do_nothing = true;
-            $current++;
-        }
-    }
-
-    return $out;
 }
