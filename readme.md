@@ -73,6 +73,7 @@ This README describes how to get the script up and running, but if you want to r
 Getting the script up and running is very straightforward:
 
 1. download the code
+2. rename config_dummy.php to config.php
 2. setup the configuration params
 3. run php oauth.php
 4. copy the access code to the config file
@@ -100,14 +101,25 @@ To get setup follow the instructions below:
    ```sh
    git clone https://github.com/williamsdb/foursquare-to-dayone.git
    ```
+2. in the ```src``` folder rename ```config_dummy.php``` to ```config.php```
 3. open ```src/config.php``` and add your Foursquare client key, secret and redirect URI
 4. run ```php oauth.php``` from the command line
-5. copy the Access Token and add it to the src/config.php file
-6. if you want a map to be included in the Day One entry paste your Mapbox token in ```src/config.php``` and create the folder ```src/maps```. If not set INCLUDE_MAPS to FALSE
-7. set your Day One journal name, in which the entries will be created in
+5. copy the Access Token and add it to the ```src/config.php``` file
+6. if you want a map to be included in the Day One entry paste your Mapbox token in ```src/config.php``` and create the folder ```src/maps```. If not, set ```INCLUDE_MAPS``` in ```config.php``` to ```FALSE```
+7. in ```config.php``` set ```DAYONE_JOURNAL``` to the Day One journal name in which you want the entries to be created
 4. follow the instructions below to run.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Foursquare Authentication
+
+To get your access token, register for a [Foursquare developers account](https://foursquare.com/developers/home), ensuring that you use the same account as your check-ins are registered with. Copy the Client ID and Secret from the OAuth Authentication section to ```CLIENT_KEY``` and ```CLIENT_SECRET``` of ```config.php```. Next complete the Redirect URL – I suggest you use exactly as shown here and in the ```config.php``` file. Remember to save it!
+
+![](https://www.spokenlikeageek.com/wp-content/uploads/2025/11/SCR-20251129-osss.png)
+
+Now go to the command line and from the code folder run php ```oauth.php```. What should happen now is that a web browser will open and take you through the Foursquare login and authentication process, and when that is done, return the access token to the command line. Copy this to the ```FOURSQUARE_ACCESS_TOKEN``` field in the ```config.php``` file.
+
+![](https://www.spokenlikeageek.com/wp-content/uploads/2025/11/SCR-20251129-osjx.png)
 
 
 <!-- USAGE EXAMPLES -->
